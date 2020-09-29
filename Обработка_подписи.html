@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<title>Signature</title>
+		<style>
+			#parent_div
+				{
+					margin-left: 15%;
+				}
+		</style>
+	</head>
+	<body>
+		
+		<div id='parent_div'>
+			<h4>Tools for process string for token</h4>
+			<div>
+				<textarea rows="10" cols="45" name="text" id = "raw_date"></textarea>
+				<textarea rows="10" cols="45" name="text" id = "result_date"></textarea>
+				<textarea rows="10" cols="45" name="text" id = "phrases"></textarea>
+				<br>
+				<button id = "button" >Подготовить данные,удалить CR LF</button>
+			</div>
+		</div>
+		
+	</body>	  
+	<script>
+		window.onload = function()
+		{
+			
+			var button = document.querySelector("button");
+
+			button.onclick = function()
+			{
+				var source = document.getElementById("raw_date"); 
+				var distinct = document.getElementById("result_date");
+				var parent_div = document.getElementById('parent_div');
+				if(distinct.value !=='')
+				{
+					add_child(parent_div,distinct.value)
+				}
+				distinct.value = '';
+				string_without_token = delete_phrase(source.value);	
+				distinct.value = delete_special_characters(string_without_token);
+
+			};
+
+
+			function delete_phrase(string_for_process)
+			// This Function will be deleted phrase Authorization: Bearer
+			{
+				var result_arr = string_for_process.split('Authorization: Bearer');
+				if (result_arr.length >= 2) 
+				{
+					result = result_arr[1];
+				}
+				else
+				{
+					result = result_arr[0];					
+				}
+				return result; 
+			}
+
+			function add_child(element, string) 
+			{
+				var div_child = document.createElement("div");
+				var textarea_child = document.createElement("textarea");
+				textarea_child.value = string;
+				textarea_child.rows = 10;
+				textarea_child.cols = 45;
+				div_child.appendChild(textarea_child);
+				element.appendChild(div_child);
+
+			}
+
+
+			function delete_special_characters(string_for_process) 
+			// This function will delete special_characters from string. Will be deleted all characters like this \r \n
+			{   			
+				var result_string = "";
+				for (let index = 0; index < string_for_process.length; index++)
+				{
+					var current_symbol = string_for_process[index];
+					switch(current_symbol)
+					{
+						case "\r" :
+							current_symbol = "";	
+							break;
+						case "\n":
+							current_symbol = "";
+							break;	
+						case " ":
+							current_symbol = "";
+							break;	
+						default:
+							current_symbol = string_for_process[index];
+							break;			
+					}
+					result_string = result_string + current_symbol;	
+				}
+				return result_string;	
+			}
+			
+		}
+	</script>
+</html>
