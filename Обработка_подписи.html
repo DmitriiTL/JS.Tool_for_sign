@@ -46,7 +46,7 @@
 
 
 			function delete_phrase(string_for_process)
-			// This Function will be deleted phrase Authorization: Bearer
+			// This Function will be deleted phrase "Authorization: Bearer", "-----END CMS-----"". "-----BEGIN CMS-----""
 			{
 				var result_arr = string_for_process.split('Authorization: Bearer');
 				if (result_arr.length >= 2) 
