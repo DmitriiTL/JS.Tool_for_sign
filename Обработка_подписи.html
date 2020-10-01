@@ -5,7 +5,7 @@
 		<style>
 			#parent_div
 				{
-					margin-left: 15%;
+					margin-left: 25%;
 				}
 		</style>
 	</head>
@@ -16,10 +16,10 @@
 			<div>
 				<textarea rows="10" cols="45" name="text" id = "raw_date"></textarea>
 				<textarea rows="10" cols="45" name="text" id = "result_date"></textarea>
-				<textarea rows="10" cols="45" name="text" id = "phrases"></textarea>
 				<br>
 				<button id = "button" >Подготовить данные,удалить CR LF</button>
 			</div>
+			<div id= 'area_for_result'></div>
 		</div>
 		
 	</body>	  
@@ -46,31 +46,55 @@
 
 
 			function delete_phrase(string_for_process)
-			// This Function will be deleted phrase "Authorization: Bearer", "-----END CMS-----"". "-----BEGIN CMS-----""
+			// This Function will remove phrase "Authorization: Bearer", "-----END CMS-----"". "-----BEGIN CMS-----""
 			{
-				var result_arr = string_for_process.split('Authorization: Bearer');
-				if (result_arr.length >= 2) 
-				{
-					result = result_arr[1];
-				}
-				else
-				{
-					result = result_arr[0];					
-				}
+				var arr_of_phrase = ['Authorization: Bearer','-----END CMS-----','-----BEGIN CMS-----']
+				var result = string_for_process;
+				
+				arr_of_phrase.forEach(function(element)
+					{
+						
+						result = result.replace(element,'');		
+					}
+				);
 				return result; 
 			}
 
-			function add_child(element, string) 
+			function add_child(HTMLelement, string) 
 			{
 				var div_child = document.createElement("div");
+				div_child.style.cssFloat = 'left';
+				var tital_child = document.createElement("H5");
+				var title_for_div = prompt("Enter type sign: Prod/Demo. Owner: UOT/Admin", '');
+				if (title_for_div == '' || title_for_div == 'nul') 
+					{
+						title_for_div = 'Sign';
+					}
+				title_for_div = title_for_div +" created at " +	Get_time_and_date();
+				tital_child.innerHTML = title_for_div;
 				var textarea_child = document.createElement("textarea");
 				textarea_child.value = string;
 				textarea_child.rows = 10;
 				textarea_child.cols = 45;
+				div_child.appendChild(tital_child);
 				div_child.appendChild(textarea_child);
-				element.appendChild(div_child);
+				HTMLelement.appendChild(div_child);
 
 			}
+
+			function Get_time_and_date() {
+			// Th	
+				var options = {
+					hour: 'numeric',
+					minute: 'numeric',
+					//year: 'numeric',
+					//month: 'numeric',
+					//day: 'numeric',
+					timezone: 'UTC'
+				};
+				return	(new Date).toLocaleTimeString("ru", options);
+			}
+
 
 
 			function delete_special_characters(string_for_process) 
